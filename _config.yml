@@ -73,20 +73,10 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: suka
-
+theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
     type: git
     repo: root@118.24.215.220:/home/git/hexoBlog
     branch: master
-suka_theme:
-  search:
-    enable: true
-    path: search.json
-    field: post # Page | Post | All. Default post
-  prism:
-    enable: false
-    line_number: true
-    theme: default
