@@ -1,0 +1,21 @@
+language: node_js
+
+sudo: false
+
+node_js:
+  - "10"
+
+cache:
+  apt: true
+  directories:
+    - node_modules
+
+addons:
+  ssh_known_hosts: huguobo.site
+
+script:
+  - hexo clean && hexo generate
+
+branches:
+  only:
+    - master
