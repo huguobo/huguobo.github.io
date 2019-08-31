@@ -3,7 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Cooper's Blog
+title: Copper's Blog
 subtitle: Front-end/Full-stack 
 description:
 keywords:
@@ -13,7 +13,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://118.24.215.220
+url: http://huguobo.site
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
