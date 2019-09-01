@@ -1,7 +1,5 @@
 language: node_js
 
-sudo: false
-
 node_js:
   - "10"
 
@@ -10,12 +8,27 @@ cache:
   directories:
     - node_modules
 
+before_install:
+- openssl aes-256-cbc -K $encrypted_1fc90f464345_key -iv $encrypted_1fc90f464345_iv
+  -in id_rsa.enc -out ~\/.ssh/id_rsa -d
+- chmod 600 ~/.ssh/id_rsa
+
 addons:
-  ssh_known_hosts: huguobo.site
+  ssh_known_hosts: $DEPLOY_IP
 
 script:
   - hexo clean && hexo generate
 
+after_success:
+  - pwd
+  - scp -o StrictHostKeyChecking=no -r public/*  root@$DEPLOY_IP:/opt/hexoBlog/
+
 branches:
   only:
     - master
+
+notifications:
+  email:
+    - huguobo2010@126.com
+  on_success: change
+  on_failure: always
