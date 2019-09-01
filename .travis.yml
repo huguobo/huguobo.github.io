@@ -11,6 +11,9 @@ cache:
 addons:
   ssh_known_hosts: $DEPLOY_IP
 
+install:
+  - npm install
+
 script:
   - hexo clean && hexo generate
 
@@ -20,9 +23,16 @@ before_deploy:
 - chmod 600 deploy_rsa
 - ssh-add deploy_rsa
 
-after_success:
-  - pwd
-  - scp -o StrictHostKeyChecking=no -r public/*  root@$DEPLOY_IP:/opt/hexoBlog/
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/public root@$DEPLOY_IP:/opt/hexoBlog/
+  on:
+    branch: master
+
+# after_success:
+#   - pwd
+#   - scp -o StrictHostKeyChecking=no -r public/*  root@$DEPLOY_IP:/opt/hexoBlog/
 
 branches:
   only:
