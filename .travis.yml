@@ -27,7 +27,7 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/public root@$DEPLOY_IP:/opt/hexoBlog/
+  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/public root@$DEPLOY_IP:/opt/hexoBlog
   on:
     branch: master
 
