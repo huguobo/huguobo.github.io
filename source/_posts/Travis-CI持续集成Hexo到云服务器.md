@@ -106,7 +106,7 @@ ls
 #append the public key to the list of "authorized keys":
 cat id_rsa.pub >> authorized_keys
 ```
-### 下载 travis 输出对应加密的私钥到 travis 
+### gem install travis 输出对应加密的私钥到 travis 
 为了达到免密登录的效果，势必要用到ssh登录，肯定要告诉 travis 我们远程服务器的用户名密码，但是直接给明文不太好， travis 提供了加密功能。
 ```bash
 gem install travis #  这步失败的话请看上面关于升级ruby和切换gem源的部分
@@ -158,20 +158,34 @@ cache:
   directories:
     - node_modules
 
-before_install:
-- openssl aes-256-cbc -K $encrypted_1fc90f464345_key -iv $encrypted_1fc90f464345_iv
-  -in id_rsa.enc -out ~\/.ssh/id_rsa -d
-- chmod 600 ~/.ssh/id_rsa
-
 addons:
   ssh_known_hosts: $DEPLOY_IP
+
+install:
+  - npm install
 
 script:
   - hexo clean && hexo generate
 
-after_success:
-  - pwd
-  - scp -o StrictHostKeyChecking=no -r public/*  root@$DEPLOY_IP:/opt/hexoBlog/
+before_deploy:
+- openssl aes-256-cbc -K $encrypted_25ad2a76f550_key -iv $encrypted_25ad2a76f550_iv -in deploy_rsa.enc -out deploy_rsa -d
+- eval "$(ssh-agent -s)"
+- chmod 600 deploy_rsa
+- ssh-add deploy_rsa
+
+# deploy:
+#   provider: script
+#   skip_cleanup: true
+#   script: rsync -o StrictHostKeyChecking=no -r --delete-after --quiet $TRAVIS_BUILD_DIR/public root@$DEPLOY_IP:/opt/hexoBlog/
+#   on:
+#     branch: master
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: scp -o StrictHostKeyChecking=no -r public/*  root@$DEPLOY_IP:/opt/hexoBlog/
+  on:
+     branch: master
 
 branches:
   only:
