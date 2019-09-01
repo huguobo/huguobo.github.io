@@ -61,6 +61,13 @@ scp -o  StrictHostKeyChecking=no -i .ssh/id_rsa yourfile user@destinate_ip:/dest
 cd ~/.ssh
 cat id_rsa.pub >> authorized_keys
 ```
+
+### rsync 命令
+最终采用了 rsync 命令，我觉得都行，主要是这个同步成功了。
+```bash
+rsync -e "ssh -o PubkeyAuthentication=yes  -o stricthostkeychecking=no" -r --delete-after --quiet $TRAVIS_BUILD_DIR/public/* root@$DEPLOY_IP:/opt/hexoBlog
+```
+
 ### centOS使用gem
 因为后面要使用 `gem install travis` ,所以可能会需要 升级 ruby 和 切换 gem 源（亲测 ruby 版本低会安装报错，gem 用官方源真的是动都不动啊，太难了）
 
@@ -93,59 +100,52 @@ rvm install 2.6
 对于项目的构建来说都是 执行配置文件中写好的脚本，这个项目可能 就是 `npm install && hexo clean && hexo g`, 那么怎么执行最后一步，把文件同步传输到 云服务器上呢。 我们使用CI就是手动过程太繁琐，重复没有意义，怎么实现 `免密` 部署呢。
 
 登录到 `云服务器(centOS 7.x)`,进行如下操作
-### 生成 ssh key
-```bash
-cd ~/.ssh
-# create ssh key
-ssh-keygen -t rsa -b 4096 -C "TravisCIDeployKey"  #一直回车
-
-ls
-# 可以看到.ssh目录下得到了两个文件：id_rsa（私有秘钥）和id_rsa.pub（公有密钥）
-#id_rsa  id_rsa.pub
-
-#append the public key to the list of "authorized keys":
-cat id_rsa.pub >> authorized_keys
-```
-### gem install travis 输出对应加密的私钥到 travis 
-为了达到免密登录的效果，势必要用到ssh登录，肯定要告诉 travis 我们远程服务器的用户名密码，但是直接给明文不太好， travis 提供了加密功能。
+### gem install travis 并登录
 ```bash
 gem install travis #  这步失败的话请看上面关于升级ruby和切换gem源的部分
 travis login
 ```
-
 登录 github 账号密码，这个安全直接连接的 github 服务
 ![login](/images/login.png)
 
-加密私钥，生成.travis.yml 
+### 生成 ssh key 并输出对应加密的私钥到 travis 
+进到云服务器对应的 git 仓库目录里
 ```bash
-touch .travis.yml && travis encrypt-file ~/.ssh/id_rsa --add -r huguobo/hexo-blog
-cat .travis.yml  
-### .travis.yml  内容
-before_install:
-- openssl aes-256-cbc -K $encrypted_77965d5bdd4d_key -iv $encrypted_77965d5bdd4d_iv
-  -in id_rsa.enc -out ./id_rsa -d 
-```
+ssh-keygen -t rsa -b 4096 -C 'build@travis-ci.org' -f ./deploy_rsa
+travis encrypt-file deploy_rsa --add
+ssh-copy-id -i deploy_rsa.pub <ssh-user>@<deploy-host>
 
-.travis.yml 的内容复制到你项目里的 .travis.yml 内，为保证权限正常，多加一行设置权限的 shell
-```bash
-before_install:
-  - openssl aes-256-cbc -K $encrypted_d89376f3278d_key -iv $encrypted_d89376f3278d_iv
-    -in id_rsa.enc -out ~/.ssh/id_rsa -d
-  - chmod 600 ~/.ssh/id_rsa
+rm -f deploy_rsa deploy_rsa.pub
+git add deploy_rsa.enc .travis.yml
 ```
-
-$encrypted_77965d5bdd4d_key 和 $encrypted_77965d5bdd4d_iv 是travis 帮忙生成的环境变量，已经同步到 huguobo/hexo-blog 这个项目上了。
+项目根目录下的 `deploy_rsa.enc` 文件就是我们加密的私钥文件， `.travis.yml` 是我们的配置文件。
+$encrypted_XXXXXX_key 和 $encrypted_XXXXXXXX_iv 是travis 帮忙生成的环境变量，已经同步到 huguobo/hexo-blog 这个项目上了。
 ![iv](/images/iv.png)
 
-还有一点可能会用上，因为 travis 第一次登录远程服务器会出现 SSH 主机验证，这边会有一个主机信任问题。官方给出的方案是添加 addons 配置
+还有一点可能会用上，因为 travis 第一次登录远程服务器会出现 SSH 主机验证，这边会有一个主机信任问题。官方给出的方案是添加 addons 配置，然后修改 .travis.yml 的相关配置
 ```bash
 addons:
   ssh_known_hosts: your-ip
+
+before_deploy:
+- openssl aes-256-cbc -K $encrypted_<...>_key -iv $encrypted_<...>_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
+- eval "$(ssh-agent -s)"
+- chmod 600 /tmp/deploy_rsa
+- ssh-add /tmp/deploy_rsa
 ```
 
-项目根目录下的 `id_rsa.enc` 文件就是我们加密的私钥文件, 把它复制到我们  hexo 项目的根目录下就好啦~
+最终的部署配置, 我的是静态页面，部署就是同步文件到服务器固定目录，用的是 `rsync`，其中 -e "ssh -o PubkeyAuthentication=yes  -o stricthostkeychecking=no" 参数可以跳过第一次登录的验证。
+```bash
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: rsync -e "ssh -o PubkeyAuthentication=yes  -o stricthostkeychecking=no" -r --delete-after --quiet $TRAVIS_BUILD_DIR/public/* root@$DEPLOY_IP:/opt/hexoBlog
+  on:
+    branch: master
+```
+其他的 yml 配置需要自己根据情况配置了~
 
-## 最终的 .travis.yml 配置
+## 我最终的 .travis.yml 配置
 
 ```bash
 language: node_js
@@ -162,10 +162,12 @@ addons:
   ssh_known_hosts: $DEPLOY_IP
 
 install:
+  - npm install hexo-cli@2.0.0 -g
   - npm install
 
 script:
-  - hexo clean && hexo generate
+  - hexo clean 
+  - hexo g
 
 before_deploy:
 - openssl aes-256-cbc -K $encrypted_25ad2a76f550_key -iv $encrypted_25ad2a76f550_iv -in deploy_rsa.enc -out deploy_rsa -d
@@ -173,19 +175,19 @@ before_deploy:
 - chmod 600 deploy_rsa
 - ssh-add deploy_rsa
 
-# deploy:
-#   provider: script
-#   skip_cleanup: true
-#   script: rsync -o StrictHostKeyChecking=no -r --delete-after --quiet $TRAVIS_BUILD_DIR/public root@$DEPLOY_IP:/opt/hexoBlog/
-#   on:
-#     branch: master
-
 deploy:
   provider: script
   skip_cleanup: true
-  script: scp -o StrictHostKeyChecking=no -r public/*  root@$DEPLOY_IP:/opt/hexoBlog/
+  script: rsync -e "ssh -o PubkeyAuthentication=yes  -o stricthostkeychecking=no" -r --delete-after --quiet $TRAVIS_BUILD_DIR/public/* root@$DEPLOY_IP:/opt/hexoBlog
   on:
-     branch: master
+    branch: master
+
+# deploy:
+#   provider: script
+#   skip_cleanup: true
+#   script: scp -o StrictHostKeyChecking=no -r public/*  root@$DEPLOY_IP:/opt/hexoBlog/
+#   on:
+#      branch: master
 
 branches:
   only:
@@ -197,3 +199,16 @@ notifications:
   on_success: change
   on_failure: always
 ```
+
+## 总结
+折腾了大半天，终于看到了 CI-Success 的邮件, 网站也是成功的状态，云主机对应目录的文件也确实更新了。
+以后写博客 终于 只用 git push ，其他的等邮件通知了~~
+另外 文中的 id_rsa.enc 文件一开始我直接 vim 复制的都是乱码，一开始一直报错 `bad decrypt` ，后来上主机 git clone 仓库直接仓库内生成并添加的，这可能是个坑点。
+还有最后用 `rsync` 代替了 `scp`
+最后也把 openssl 放在了 before_deploy 阶段，放在 before_install也是没问题的，这些都是因人而异啦。
+![success](/images/success.png)
+
+## 参考文章
+- https://oncletom.io/2016/travis-ssh-deploy/
+- http://www.ruanyifeng.com/blog/2017/12/travis_ci_tutorial.html
+- https://gems.ruby-china.com/
