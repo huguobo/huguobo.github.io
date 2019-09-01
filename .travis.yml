@@ -27,7 +27,7 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -e "ssh -o PubkeyAuthentication=yes  -o stricthostkeychecking=no" -r --delete-after --quiet $TRAVIS_BUILD_DIR/public root@$DEPLOY_IP:/opt/hexoBlog
+  script: rsync -e "ssh -o PubkeyAuthentication=yes  -o stricthostkeychecking=no" -r --delete-after --quiet $TRAVIS_BUILD_DIR/public/* root@$DEPLOY_IP:/opt/hexoBlog
   on:
     branch: master
 
