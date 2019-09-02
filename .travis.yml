@@ -36,8 +36,6 @@ deploy:
 #   provider: script
 #   skip_cleanup: true
 #   script: scp -o StrictHostKeyChecking=no -r public/*  root@$DEPLOY_IP:/opt/hexoBlog/
-#   on:
-#      branch: master
 
 branches:
   only:
