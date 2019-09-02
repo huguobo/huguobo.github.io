@@ -1,6 +1,8 @@
 ---
 title: Travis-CI 持续集成 hexo 到云服务器
 date: 2019-09-01 18:35:40
+categories: 
+- CI
 tags:
 - travis
 - CI
