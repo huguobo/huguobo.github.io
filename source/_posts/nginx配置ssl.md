@@ -8,7 +8,7 @@ tags:
 - devOps
 ---
 
-> 域名貌似备案成功了，解析到腾讯云服务器ip后，发现直接访问 http://huguobo.site 是可以的 换成 https 不行了。应该是没有配置SSL导致的。
+> 域名貌似备案成功了，解析到腾讯云服务器ip后，发现直接访问 http协议 是可以的 换成 https 不行了。应该是没有配置SSL导致的。
 
 ## 什么是HTTPS
 https 全称：Hyper Text Transfer Protocol over Secure Socket Layer，是http的安全版。即http下加入SSL协议层，因此https的安全基础就是SSL，所以加密内容需要SSL。
