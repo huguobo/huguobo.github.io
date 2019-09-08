@@ -2,12 +2,12 @@
 title: Travis-CI 持续集成 hexo 到云服务器
 date: 2019-09-01 18:35:40
 categories: 
-- CI
+- devOps
 tags:
 - travis
 - CI
 - hexo
-- blog
+- gem
 ---
 
 > 烦：每次本地提交代码到 GitHub 上后还要自己手动同步文件到云服务器，完成所谓的部署工作有点麻烦和脱节。

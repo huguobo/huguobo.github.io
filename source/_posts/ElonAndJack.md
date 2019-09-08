@@ -2,7 +2,7 @@
 title: 关于双马谈话的感悟
 date: 2019-09-07 21:53:38
 categories: 
-- dialy
+- daily
 tags:
 - 日常
 - 思考

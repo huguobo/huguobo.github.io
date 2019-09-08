@@ -2,10 +2,11 @@
 title: Nginx 配置 SSL
 date: 2019-08-31 10:35:31
 categories: 
-- Nginx
+- devOps
 tags:
 - nginx
-- devOps
+- ssl
+- Https
 ---
 
 > 域名貌似备案成功了，解析到腾讯云服务器ip后，发现直接访问 http协议 是可以的 换成 https 不行了。应该是没有配置SSL导致的。
