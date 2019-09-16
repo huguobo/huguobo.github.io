@@ -5,9 +5,19 @@
         <%- partial('base-social') %>
     </div>
     <% } %>
+     <!-- footer custom text -->
+     <p class="footer-text">
+     <% if(theme.footer.custom_text) { %>
+          <% if(Array.isArray(theme.footer.custom_text)) { %>
+              <%- theme.footer.custom_text.join('<br>') %>
+          <% } else { %>
+              <%- theme.footer.custom_text %>
+          <% } %>
+      <% } %>
+      </p>
     <!-- powered by Hexo  -->
     <div class="copyright">
-        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+        <span id="hexo-powerhexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
     </div>
     <!-- 不蒜子  -->
     <% if (theme.busuanzi) { %>
