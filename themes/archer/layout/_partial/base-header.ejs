@@ -20,5 +20,9 @@
             </div>
     </div>
     <% } %>
-    <a class="home-link" href=<%- config.root %>><%- theme.main_title || config.title %></a>
+    <% if(is_post()){ %>
+      <a class="home-link" href=<%- config.root %>><img width="32px" height="32px" src="/assets/Home.svg"/></a>
+    <% } else { %>
+      <a class="home-link" href=<%- config.root %>><%= theme.main_title || config.title%></a>
+    <% } %>
 </header>
