@@ -2,6 +2,10 @@
 <header class="header index-header">
 <% } else { %>
 <header class="header">
+<% if(config.post_music) { %>
+<iframe style="position:fixed;left:50%;transform:translate(-50%, 0);" frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=574919767&auto=0&height=32"></iframe>
+<% } %>
+
 <% } %>
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
