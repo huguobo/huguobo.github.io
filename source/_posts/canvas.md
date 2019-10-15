@@ -11,7 +11,7 @@ tags:
 
 > 一直以来我都有一个很大的弱点，就是很多东西不会，但是不敢问，怕别人觉得问题太可笑，结果就是不会的的东西大部分都还不会。如何解决呢，我认为作为一个程序员，不懂就问，厚脸皮的提出来，这是一项很基本的能力，故开启这个“不懂就问系列”，希望对自己甚至对别人有所帮助。
 
-最近做关于《一镜到底》的小DEMO，用到了PIXI.JS，发现它对于自己的描述是这样的：
+最近学习制作 [《一镜到底》](https://github.com/huguobo/One-Take) 的h5页面，用到了PIXI.JS，发现它对于自己的描述是这样的：
 > PixiJS is a rendering library that will allow you to create rich, interactive graphics, cross platform applications, and games without having to dive into the WebGL API or deal with browser and device compatibility.PixiJS has full WebGL support and seamlessly falls back to HTML5's canvas if needed. 
 
 PIXI全面支持 WebGL 但是作为兜底会使用 Canvas，就是说他们两是一个层面的东西，有点晕了，查查资料，问问大佬搞清楚一点吧LOL
