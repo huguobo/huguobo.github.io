@@ -1,5 +1,5 @@
 ---
-title: 不懂就问-浏览器里到底有多少种缓存机制
+title: 不懂就问系列-浏览器里到底有多少种缓存机制
 date: 2019-11-25 17:07:44
 categories: 
 - HTTP
@@ -9,6 +9,7 @@ tags:
 - cache-control
 - last-modified
 - etag
+- 不懂就问
 ---
 
 > 对于Web应用来说，对于网络的的依赖性很公安，性能瓶颈一般都在于如果减少IO消耗，这时候一般都会想起使用缓存，但是听说过 cache-control，expires 还有 Etag等名词的缓存策略，他们又分别代表什么呢，抓紧时间总结一下
