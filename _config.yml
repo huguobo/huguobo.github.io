@@ -59,7 +59,7 @@ category_map:
 tag_map:
 
 # music
-post_music: true
+post_music: false
 
 # Date / Time format
 ## Hexo uses Moment.js to parse and display date
