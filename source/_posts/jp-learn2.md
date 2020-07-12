@@ -1,5 +1,5 @@
 ---
-title: jp-learn2
+title: 日语基础学习2-数字
 date: 2020-07-12 10:28:55
 categories: 
 - 日语
