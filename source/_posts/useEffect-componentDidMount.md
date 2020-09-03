@@ -32,16 +32,17 @@ componentDidMount在组件挂载之后运行。如果立即（同步）设置 st
 4. state 变更导致 再次执行 render，而且返回了新的 返回值
 5. 浏览器只显示了第二次 render 的返回值，这样可以避免闪屏
 
-可以理解为上面的一些都是同步执行的，会阻塞到浏览器将真实DOM最终绘制到浏览器上，当我们需要它的时候，这样的工作模式是合理的。但大多数情况下，我们是在UI Paint 完毕之后，执行一些异步拉取数据之后setState之类的副作用。
+可以理解为上面的过程都是同步执行的，会阻塞到浏览器将真实DOM最终绘制到浏览器上，当我们需要它的时候，这样的工作模式是合理的。但大多数情况下，我们可以在UI Paint 完毕之后，再执行一些异步拉取数据之后setState之类的副作用。
 
-componentDidMount和useEffect在挂载后运行。但是，useEffect 在 Paint (绘制)之后延迟异步运行。这意味着如果需要从DOM读取数据，然后同步设置state以生成新的UI，有可能会有闪烁的问题发生。React 也提供了 同步执行模式的 useLayoutEffect，它更加接近 componentDidMount( )的表现。
+useEffect 也是在挂载后运行，但是它更往后，它不会阻塞真事Dom的渲染，因为 useEffect 在 Paint (绘制)之后延迟异步运行。这意味着如果需要从DOM读取数据，然后同步设置state以生成新的UI，有可能会有闪烁的问题发生。React 也提供了 同步执行模式的 useLayoutEffect，它更加接近 componentDidMount( )的表现。
 
 如果想通过同步设置状态来避免闪烁，那么可以使用useLayoutEffect。但是大部分时间都需要使用useEffect比较好。
 
 
 ## Props 和 State 的捕获（Capturing）
 
-在React应用程序中，会存在许多的异步操作。当我们的异步操作执行时，props 和 state 的值可能会有点混乱。假设我们有很多异步代操作流程，在执行时需要知道 count 的状态： 
+在React应用程序中，会存在许多的异步操作。当多个异步操作执行时，props 和 state 的值可能会有点混乱。
+假设我们有很多异步代操作流程，在执行时需要知道 count 的状态： 
 
 ```javascript
 class App extends React.Component {
@@ -99,9 +100,9 @@ function App() {
 }
 ```
 
-但是运行后会发现，它的表现和 class 实现有所不同，无论你在 longResolve 执行完毕前点击多少次，最后 alert 的 count 都是 0。
+但是运行后会发现，它的表现和 class 版本有所不同，无论你在 longResolve 执行完毕前点击多少次，最后 alert 的 count 都是 0。
 
-造成这种差异的原因是 useEffect 在创建时就已经捕获了count的值。当我们把回调函数赋给useEffect时，它会存在于内存中，在内存中它只知道 count 在创建时是0（由于闭包）。不管经过了多少时间，以及 count 这个时间内改变了多少次，闭包的本质是只跟创建闭包时这个值的状态有关，我们称之为“捕捉”。而在 class组件中，componentDidMount( ) 没有闭包，每次读取的都是当前 count 的值。
+造成这种差异的原因是 useEffect 在创建时就已经捕获了count的值。当我们把回调函数赋给useEffect时，它会存在于内存中，在内存中它只知道 count 在创建时是0（由于闭包）。不管经过了多少时间，以及 count 这个时间内改变了多少次，闭包的本质是只跟创建闭包时这个值的状态有关，我们称之为“捕获”。而在 class组件中，componentDidMount( ) 没有闭包，每次读取的都是当前 count 的值。
 
 情况可以等同于下面的函数来理解，在内存中，useEffect 的回调函数中的 count 再创建时赋予了初始值0，此时 count 的值不会再因外界的变化而受到影响。
 
@@ -149,7 +150,7 @@ function App() {
 
 Class 版本的代码，每隔一秒，显示的 count 会加1。然而用 hooks 实现的版本，显示count只会从 0 变为1，而且其实此时 setinerval 并没有停止，只是在不断的重复 setCount( 0 + 1 )， 因为对于 useEffect 回调函数内来说得到的 count 一直是 0。
 
-看起来hooks貌似造成一些之前不会有的麻烦，但是如果接受了这种模式，它反而能让你避免错误。讲到这里，需要再强调下，我们不是在讨论应该怎么使用 setInterval ，而是如何调整心智模型从 类组件 到 Hooks。
+这么看起来 Hooks 貌似造成一些之前不会有的麻烦，但是如果接受了这种模式，它反而能让你避免错误。讲到这里，需要再强调下，我们不是在讨论应该怎么使用 setInterval ，而是如何调整心智模型从 类组件 转变为 Hooks。
 
 接下来一个重要的概念就是 **依赖数组（depends array）**
 
@@ -219,7 +220,7 @@ class UserProfile extends React.Component {
 }
 ```
 
-很容易就发现一个需要改进的地方，如果 uid 发生变化我们应该怎么办，这种情况我们需要再写一个  componentDidUpdate 来配合处理，其实很容易忘记，而且内部处理的逻辑是一样的，而且都是副作用，代码看起来很冗余。
+很容易就发现一个需要改进的地方，如果 uid 发生变化我们应该怎么办，这种情况我们通常需要再写一个 componentDidUpdate 来配合处理，其实很容易忘记，而且内部处理的逻辑是一样的，而且都是副作用，代码看起来很冗余。
 
 如果像文章开头所说，我们提前假定  useEffect(fn, [])  === componentDidMount（），我们就会直接得到如下的代码：
 
@@ -237,7 +238,7 @@ function UserProfile({ uid }) {
 }
 ```
 
-然后如果你记忆力比较好，会接着还一样的模式向自己提问：怎么样的 hook === didupdate，然后再实现一下。如果你忘记了，那代码就是遗漏了很大一部分功能。显然这不是正确的思维模式，如果我们提前了解 useEffect 的执行时机以及 对于props的捕获（capturing）特性，这个思考是更连续性，更符合 hooks 模式的心智模型，会有下面的重构后的代码：
+然后如果你记忆力比较好，会接着还一样的模式向自己提问：怎么样的 hook === didupdate，然后再实现一下。如果你忘记了，那代码就是遗漏了很大一部分功能。显然这不是正确的思维模式，如果我们提前了解 useEffect 的执行时机以及 对于props的捕获（capturing）特性，之后的思考是更连续，更符合 Hooks 模式的心智模型，就会有下面的重构后的代码：
 
 ```javascript
 useEffect(() => {
@@ -255,7 +256,7 @@ useEffect(() => {
 
 ## 总结 
 
-使用 Hooks 模式进行编程时，我们需要忘记 生命周期 的概念，使用 **以状态为中心，以及对应状态发生变化时，哪些副作用需要重新执行** 的思想来进行编码。
+使用 Hooks 模式进行编程时，我们需要忘记 生命周期和时间线 的概念，使用 **以状态为中心，以及对应状态发生变化时，哪些副作用需要重新执行** 的思想来进行编码。
 
 
 
