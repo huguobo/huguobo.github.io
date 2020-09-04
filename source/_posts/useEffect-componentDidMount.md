@@ -10,7 +10,7 @@ tags:
 - react-hooks
 ---
 
-> 从 React 16.8 版本开始引入了新增特性 Hooks，可以在不编写 Class 的情况下使用 state 以及其他 React 特性。所有 React 使用者都得经历从 Class 组件到 Hooks 模式的过渡期，但是这一时期令我们很容易走进一个误区。
+> React 从 16.8 版本开始引入了新增特性 Hooks，可以在不编写 Class 的情况下使用 state 以及其他 React 特性。所有 React 使用者都得经历从 Class 组件到 Hooks 模式的过渡期，但是这一时期令我们很容易走进一个误区。
 
 ## 误区：哪个 Hook 的功能 等价于【某个生命周期函数】？
 
