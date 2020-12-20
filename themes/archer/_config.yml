@@ -26,12 +26,12 @@ social:
   bilibili: 
   linkedin: 
   steam: 
-  others: https://huguobo.github.io
+  others: https://huguobo.github.io/old-blog/
   rss: 
 # links
 links:
   CV: 'http://huguobo.github.io/myResume/'
-  旧博客: 'http://huguobo.github.io/'
+  旧博客: 'https://huguobo.github.io/old-blog/'
   Sofia: 'http://sofiaying.online/'
 about:
   enable: true
