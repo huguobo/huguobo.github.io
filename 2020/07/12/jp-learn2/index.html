@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="cooperhu">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="cooperhu">
+    
+    <meta name="keywords" content=",hexo,hexo-blog,JS,Javascript,CSS,React,VUE,Webpack,CI,nginx">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>日语基础学习2-数字 · Cooper&#39;s Blog</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        height: 60vh;
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Cooper&#39;s Blog</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">日语基础学习2-数字</a>
+            </div>
+    </div>
+    
+    
+      <a class="home-link" href=/><img width="32px" height="32px" src="/assets/Home.svg"/></a>
+    
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            日语基础学习2-数字
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "日语">日语</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "数字">数字</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">667</span>阅读时长: <span class="post-count reading-time">2 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2020/07/12</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="日语基础学习2-数字"><a href="#日语基础学习2-数字" class="headerlink" title="日语基础学习2-数字"></a>日语基础学习2-数字</h1><h2 id="1-10-的数字"><a href="#1-10-的数字" class="headerlink" title="1-10 的数字"></a>1-10 的数字</h2><table>
+<thead>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>一</td>
+<td>二</td>
+<td>三</td>
+<td>四</td>
+<td>五</td>
+</tr>
+<tr>
+<td>いち</td>
+<td>に</td>
+<td>さん</td>
+<td>し／よん</td>
+<td>ご</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>六</td>
+<td>七</td>
+<td>八</td>
+<td>九</td>
+<td>十</td>
+</tr>
+<tr>
+<td>ろく</td>
+<td>しち／なな</td>
+<td>はち</td>
+<td>きゅう</td>
+<td>じゅう</td>
+</tr>
+</tbody></table>
+<p>如图所示，4 既可以是「し」也可以是「よん」，而 7 可以是「しち」或「なな」。十以内的话基本上怎么说都可以，不过十以后的话就要用「よん」和「なな」了。一般来说，「よん」和「なな」在大多数场合比「し」和「しち」常用。</p>
+<p>你可以用这十个数字从 1 数到 99。这方面日语比英语简单，因为你不用去记那些特殊的 “twenty” 或 “fifty”，只要说「二十」和「五十」就可以了</p>
+<ol>
+<li>三十一 （さんじゅういち） = 31</li>
+<li>五十四 （ごじゅうよん）= 54</li>
+<li>七十七 （ななじゅうなな）= 77</li>
+<li>二十 （にじゅう） = 20</li>
+</ol>
+<p>注意数字不是全用汉字写，就是全用阿拉伯数字写，因为写平假名的话会长到让你难以分辨。</p>
+<h2 id="超过-99-的数字"><a href="#超过-99-的数字" class="headerlink" title="超过 99 的数字"></a>超过 99 的数字</h2><p>下面是更大的数字：</p>
+<table>
+<thead>
+<tr>
+<th align="center">数字</th>
+<th>100</th>
+<th>1,000</th>
+<th>10,000</th>
+<th>10^8</th>
+<th>10^12</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">漢字</td>
+<td>百</td>
+<td>千</td>
+<td>万</td>
+<td>億</td>
+<td>兆</td>
+</tr>
+<tr>
+<td align="center">平假名</td>
+<td>ひゃく</td>
+<td>せん</td>
+<td>まん</td>
+<td>おく</td>
+<td>ちょう</td>
+</tr>
+</tbody></table>
+<p>注意到 10^4 和 10^8 之间，也就是万 和 億之间是空白的吗？这是因为日语里面数字是按万位分组的。超过 1万 (10,000) 以后，就要回头重来，直到 9,999 万，然后才到 1億 (100,000,000)。另外，百 是 100，千是 1,000，但再大就必须加个 1，于是剩下的单位就变成了一万 (10^4)、一億 (10^8)、一兆 (10^12)。</p>
+<p>现在你可以数到 9,999,999,999,999,999 了，把那些数字串起来就行。但问题才开始出现。你可以试着说一下「いちちょう」 、「ろくひゃく」或者「さんせん」，说快一点你就会发现很困难，因为老是要重复那些相似的元音。所以日本人决定简化，发音成「いっちょう」、 「ろっぴゃく」和「さんぜん」。不幸的是这让大家的学习变得更难了。以下是所有的细微变化。</p>
+<table>
+<thead>
+<tr>
+<th align="center">数字</th>
+<th align="center">漢字</th>
+<th align="center">ひらがな</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">300</td>
+<td align="center">三百</td>
+<td align="center">さんびゃく</td>
+</tr>
+<tr>
+<td align="center">600</td>
+<td align="center">六百</td>
+<td align="center">ろっぴゃく</td>
+</tr>
+<tr>
+<td align="center">800</td>
+<td align="center">八百</td>
+<td align="center">はっぴゃく</td>
+</tr>
+<tr>
+<td align="center">3000</td>
+<td align="center">三千</td>
+<td align="center">さんぜん</td>
+</tr>
+<tr>
+<td align="center">8000</td>
+<td align="center">八千</td>
+<td align="center">はっせん</td>
+</tr>
+<tr>
+<td align="center">10^12</td>
+<td align="center">一兆</td>
+<td align="center">いっちょう</td>
+</tr>
+</tbody></table>
+<ol>
+<li>四万三千七十六 （よんまんさんぜんななじゅうろく）<br>43,076</li>
+<li>七億六百二十四万九千二百二十二 （ななおくろっぴゃくにじゅうよんまんきゅうせんにひゃくにじゅうに）<br>706,249,222</li>
+<li>五百兆二万一 （ごひゃくちょうにまんいち）<br>500,000,000,020,001</li>
+</ol>
+<p>注意要么写成阿拉伯数字，要么写成汉字，否则（平假名）很难分割。</p>
+<h3 id="比-1-小的数"><a href="#比-1-小的数" class="headerlink" title="比 1 小的数"></a>比 1 小的数</h3><ol>
+<li>零 【れい】 - 零</li>
+<li>ゼロ - 零</li>
+<li>マル - 圆圈；零</li>
+<li>点 【てん】 - 点</li>
+<li>マイナス - 减</li>
+</ol>
+<p>日语里面的零是「零」，不过「ゼロ」或「マル」在现代日语里面更常用。小数点说「点」就可以，然后后面的数字挨个念。下面是例子：</p>
+<ul>
+<li>0.0021 = ゼロ、点、ゼロ、ゼロ、二、一。</li>
+</ul>
+<p>负数跟正数一样，只不过要先说一个「マイナス」。</p>
+<ul>
+<li>マイナス二十九 = -29</li>
+</ul>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="http://cooperhu.com">cooperhu</a>
+            <p>原文链接：<a href="http://cooperhu.com/2020/07/12/jp-learn2/">http://cooperhu.com/2020/07/12/jp-learn2/</a>
+            <p>发表日期：<a href="http://cooperhu.com/2020/07/12/jp-learn2/">July 12th 2020, 10:28:55 am</a>
+            <p>更新日期：<a href="http://cooperhu.com/2020/07/12/jp-learn2/">February 21st 2022, 9:45:59 am</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2020/08/04/jp-learn3/" title= "日语基础学习3-状态表示">
+                    <div class="nextTitle">日语基础学习3-状态表示</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2020/07/10/js-regexp/" title= "JavaScript 中的正则表达式">
+                    <div class="prevTitle">JavaScript 中的正则表达式</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:huguobo2010@icloud.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/huguobo" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="https://huguobo.github.io/old-blog/" class="iconfont-archer others" target="_blank" title=others></a>
+            
+        
+    
+        
+    
+
+    </div>
+    
+     <!-- footer custom text -->
+     <p class="footer-text">
+     
+          
+              <a href="https://beian.miit.gov.cn" target="_blank" rel="nofollow noopener noreferrer">京ICP备19041562号</a>
+          
+      
+      </p>
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-powerhexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#日语基础学习2-数字"><span class="toc-number">1.</span> <span class="toc-text">日语基础学习2-数字</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-10-的数字"><span class="toc-number">1.1.</span> <span class="toc-text">1-10 的数字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#超过-99-的数字"><span class="toc-number">1.2.</span> <span class="toc-text">超过 99 的数字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#比-1-小的数"><span class="toc-number">1.2.1.</span> <span class="toc-text">比 1 小的数</span></a></li></ol></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 19
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span><a class="archive-post-title" href= "/2020/09/03/useEffect-componentDidMount/" >useEffect(fn, []) 不等于 componentDidMount()</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/04</span><a class="archive-post-title" href= "/2020/08/04/jp-learn3/" >日语基础学习3-状态表示</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/12</span><a class="archive-post-title" href= "/2020/07/12/jp-learn2/" >日语基础学习2-数字</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/10</span><a class="archive-post-title" href= "/2020/07/10/js-regexp/" >JavaScript 中的正则表达式</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/29</span><a class="archive-post-title" href= "/2020/06/29/jp-learn1/" >日语基础学习1</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/01</span><a class="archive-post-title" href= "/2020/05/01/javascript-type-judgement/" >不懂就问系列-JavaScript到底怎么判断数据类型</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/25</span><a class="archive-post-title" href= "/2019/11/25/http-cache/" >不懂就问系列-浏览器里到底有多少种缓存机制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/21</span><a class="archive-post-title" href= "/2019/10/21/why-git-add/" >不懂就问系列-为什么git有暂存区这一层</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/15</span><a class="archive-post-title" href= "/2019/10/15/canvas/" >不懂就问系列-Canvas和WebGL是啥关系？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/10</span><a class="archive-post-title" href= "/2019/10/10/thread/" >操作系统中的进程和线程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/24</span><a class="archive-post-title" href= "/2019/09/24/js-image-preview/" >H5实现图片预览的两种方式和区别</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/HHKB/" >HHKB键盘</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/09</span><a class="archive-post-title" href= "/2019/09/09/JsWidthAndHeight/" >WEB开发中涉及的各种宽高</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/07</span><a class="archive-post-title" href= "/2019/09/07/ElonAndJack/" >关于双马谈话的感悟</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span><a class="archive-post-title" href= "/2019/09/03/sshLogin/" >SSH、SSL 和 HTTPS</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/01</span><a class="archive-post-title" href= "/2019/09/01/Travis-CI持续集成Hexo到云服务器/" >Travis-CI 持续集成 hexo 到云服务器</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/31</span><a class="archive-post-title" href= "/2019/08/31/node-1/" >Node模块机制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/31</span><a class="archive-post-title" href= "/2019/08/31/nginx配置ssl/" >Nginx 配置 SSL</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/30</span><a class="archive-post-title" href= "/2019/08/30/新网站/" >关于这个网站</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="日常"><span class="iconfont-archer">&#xe606;</span>日常</span>
+    
+        <span class="sidebar-tag-name" data-tags="思考"><span class="iconfont-archer">&#xe606;</span>思考</span>
+    
+        <span class="sidebar-tag-name" data-tags="HHKB"><span class="iconfont-archer">&#xe606;</span>HHKB</span>
+    
+        <span class="sidebar-tag-name" data-tags="keyboard"><span class="iconfont-archer">&#xe606;</span>keyboard</span>
+    
+        <span class="sidebar-tag-name" data-tags="scorllTop"><span class="iconfont-archer">&#xe606;</span>scorllTop</span>
+    
+        <span class="sidebar-tag-name" data-tags="height"><span class="iconfont-archer">&#xe606;</span>height</span>
+    
+        <span class="sidebar-tag-name" data-tags="width"><span class="iconfont-archer">&#xe606;</span>width</span>
+    
+        <span class="sidebar-tag-name" data-tags="travis"><span class="iconfont-archer">&#xe606;</span>travis</span>
+    
+        <span class="sidebar-tag-name" data-tags="CI"><span class="iconfont-archer">&#xe606;</span>CI</span>
+    
+        <span class="sidebar-tag-name" data-tags="hexo"><span class="iconfont-archer">&#xe606;</span>hexo</span>
+    
+        <span class="sidebar-tag-name" data-tags="gem"><span class="iconfont-archer">&#xe606;</span>gem</span>
+    
+        <span class="sidebar-tag-name" data-tags="Canvas"><span class="iconfont-archer">&#xe606;</span>Canvas</span>
+    
+        <span class="sidebar-tag-name" data-tags="WebGL"><span class="iconfont-archer">&#xe606;</span>WebGL</span>
+    
+        <span class="sidebar-tag-name" data-tags="不懂就问"><span class="iconfont-archer">&#xe606;</span>不懂就问</span>
+    
+        <span class="sidebar-tag-name" data-tags="cache"><span class="iconfont-archer">&#xe606;</span>cache</span>
+    
+        <span class="sidebar-tag-name" data-tags="expires"><span class="iconfont-archer">&#xe606;</span>expires</span>
+    
+        <span class="sidebar-tag-name" data-tags="cache-control"><span class="iconfont-archer">&#xe606;</span>cache-control</span>
+    
+        <span class="sidebar-tag-name" data-tags="last-modified"><span class="iconfont-archer">&#xe606;</span>last-modified</span>
+    
+        <span class="sidebar-tag-name" data-tags="etag"><span class="iconfont-archer">&#xe606;</span>etag</span>
+    
+        <span class="sidebar-tag-name" data-tags="javascript"><span class="iconfont-archer">&#xe606;</span>javascript</span>
+    
+        <span class="sidebar-tag-name" data-tags="日语"><span class="iconfont-archer">&#xe606;</span>日语</span>
+    
+        <span class="sidebar-tag-name" data-tags="数字"><span class="iconfont-archer">&#xe606;</span>数字</span>
+    
+        <span class="sidebar-tag-name" data-tags="状态"><span class="iconfont-archer">&#xe606;</span>状态</span>
+    
+        <span class="sidebar-tag-name" data-tags="JS"><span class="iconfont-archer">&#xe606;</span>JS</span>
+    
+        <span class="sidebar-tag-name" data-tags="File"><span class="iconfont-archer">&#xe606;</span>File</span>
+    
+        <span class="sidebar-tag-name" data-tags="HTML5"><span class="iconfont-archer">&#xe606;</span>HTML5</span>
+    
+        <span class="sidebar-tag-name" data-tags="nginx"><span class="iconfont-archer">&#xe606;</span>nginx</span>
+    
+        <span class="sidebar-tag-name" data-tags="ssl"><span class="iconfont-archer">&#xe606;</span>ssl</span>
+    
+        <span class="sidebar-tag-name" data-tags="Https"><span class="iconfont-archer">&#xe606;</span>Https</span>
+    
+        <span class="sidebar-tag-name" data-tags="NODE"><span class="iconfont-archer">&#xe606;</span>NODE</span>
+    
+        <span class="sidebar-tag-name" data-tags="thread"><span class="iconfont-archer">&#xe606;</span>thread</span>
+    
+        <span class="sidebar-tag-name" data-tags="linux"><span class="iconfont-archer">&#xe606;</span>linux</span>
+    
+        <span class="sidebar-tag-name" data-tags="OS"><span class="iconfont-archer">&#xe606;</span>OS</span>
+    
+        <span class="sidebar-tag-name" data-tags="暂存区"><span class="iconfont-archer">&#xe606;</span>暂存区</span>
+    
+        <span class="sidebar-tag-name" data-tags="git add"><span class="iconfont-archer">&#xe606;</span>git add</span>
+    
+        <span class="sidebar-tag-name" data-tags="git commit"><span class="iconfont-archer">&#xe606;</span>git commit</span>
+    
+        <span class="sidebar-tag-name" data-tags="白话"><span class="iconfont-archer">&#xe606;</span>白话</span>
+    
+        <span class="sidebar-tag-name" data-tags="浊音"><span class="iconfont-archer">&#xe606;</span>浊音</span>
+    
+        <span class="sidebar-tag-name" data-tags="半浊音"><span class="iconfont-archer">&#xe606;</span>半浊音</span>
+    
+        <span class="sidebar-tag-name" data-tags="SSH"><span class="iconfont-archer">&#xe606;</span>SSH</span>
+    
+        <span class="sidebar-tag-name" data-tags="SSL"><span class="iconfont-archer">&#xe606;</span>SSL</span>
+    
+        <span class="sidebar-tag-name" data-tags="encrypt"><span class="iconfont-archer">&#xe606;</span>encrypt</span>
+    
+        <span class="sidebar-tag-name" data-tags="useEffect"><span class="iconfont-archer">&#xe606;</span>useEffect</span>
+    
+        <span class="sidebar-tag-name" data-tags="capturing"><span class="iconfont-archer">&#xe606;</span>capturing</span>
+    
+        <span class="sidebar-tag-name" data-tags="react-hooks"><span class="iconfont-archer">&#xe606;</span>react-hooks</span>
+    
+        <span class="sidebar-tag-name" data-tags="JavaScript"><span class="iconfont-archer">&#xe606;</span>JavaScript</span>
+    
+        <span class="sidebar-tag-name" data-tags="正则"><span class="iconfont-archer">&#xe606;</span>正则</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="daily"><span class="iconfont-archer">&#xe60a;</span>daily</span>
+    
+        <span class="sidebar-category-name" data-categories="JavaScript"><span class="iconfont-archer">&#xe60a;</span>JavaScript</span>
+    
+        <span class="sidebar-category-name" data-categories="devOps"><span class="iconfont-archer">&#xe60a;</span>devOps</span>
+    
+        <span class="sidebar-category-name" data-categories="WebGL"><span class="iconfont-archer">&#xe60a;</span>WebGL</span>
+    
+        <span class="sidebar-category-name" data-categories="HTTP"><span class="iconfont-archer">&#xe60a;</span>HTTP</span>
+    
+        <span class="sidebar-category-name" data-categories="javascript"><span class="iconfont-archer">&#xe60a;</span>javascript</span>
+    
+        <span class="sidebar-category-name" data-categories="日语"><span class="iconfont-archer">&#xe60a;</span>日语</span>
+    
+        <span class="sidebar-category-name" data-categories="NODE"><span class="iconfont-archer">&#xe60a;</span>NODE</span>
+    
+        <span class="sidebar-category-name" data-categories="OS"><span class="iconfont-archer">&#xe60a;</span>OS</span>
+    
+        <span class="sidebar-category-name" data-categories="Git"><span class="iconfont-archer">&#xe60a;</span>Git</span>
+    
+        <span class="sidebar-category-name" data-categories="React"><span class="iconfont-archer">&#xe60a;</span>React</span>
+    
+        <span class="sidebar-category-name" data-categories="React/Hooks"><span class="iconfont-archer">&#xe60a;</span>React/Hooks</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "cooperhu"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
