@@ -31,13 +31,10 @@ jspm_packages
 .npm
 package-lock.json
 
-/public
 .webpack-hmr-records.json
 *.sw[op]
 # Optional REPL history
 .node_repl_history
-
-public/*.bundle.*
 
 .idea/
 .DS_Store

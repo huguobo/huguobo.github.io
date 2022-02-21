@@ -110,4 +110,4 @@ jsonContent:
 deploy:
     type: git
     repo: git@github.com:huguobo/huguobo.github.io.git
-    branch: gh-pages
+    branch: master
