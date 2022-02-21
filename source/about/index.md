@@ -10,13 +10,9 @@ layout: about
 > 人一天天老下去，奢望也一天天消失，最后变得像挨了锤的牛一样。
 > 我希望自己会永远生猛下去，什么也锤不了我。 
 
-## 靓仔
-<img src="https://github.com/huguobo/public/blob/master/avtar.jpg?raw=true" width="25%" style="margin: 0">
-
 ## 基本信息
 - 男
 - 性格开朗
-- 1992 年生人
 
 ## 学习生涯
 - 吉林大学
