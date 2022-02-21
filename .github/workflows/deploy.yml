@@ -5,31 +5,17 @@ on:
       - master # master 分支有 push 行为时就触发这个 action
 
 jobs:
-  build_and_deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '12'
-      - name: Prepare ssh env
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_DEPLOY_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 'github.com' >> ~/.ssh/known_hosts          
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Build and Deploy
+        uses: theme-keep/hexo-deploy-github-pages-action@master # 使用专门部署 Hexo 到 GitHub pages 的 action
         env:
-          SSH_DEPLOY_KEY: ${{ secrets.HEXO_BLOG }}
-      - name: Prepare hexo and npm env
-        run: |
-          npm install -g hexo-cli
-          npm install          
-      - name: Prepare git env
-        run: |
-          git config --global user.email huguobo2010@126.com
-          git config --global user.name huguobo          
-      - name: Deploy Blog
-        run: | 
-          hexo clean
-          hexo g
-          hexo d
+          PERSONAL_TOKEN: ${{ secrets.HEXO_BLOG }} # secret 名
+          PUBLISH_REPOSITORY: huguobo/huguobo.github # 公共仓库，格式：GitHub 用户名/仓库名
+          BRANCH: gh-pages # 分支，填 gh-pages 就行
+          PUBLISH_DIR: ./public # 部署 public 目录下的文件
+

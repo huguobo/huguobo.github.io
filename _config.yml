@@ -107,7 +107,7 @@ jsonContent:
     tags: true
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
-deploy:
-    type: git
-    repo: git@github.com:huguobo/huguobo.github.io.git
-    branch: master
+# deploy:
+#     type: git
+#     repo: git@github.com:huguobo/huguobo.github.io.git
+#     branch: master

@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="cooperhu">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="cooperhu">
+    
+    <meta name="keywords" content=",hexo,hexo-blog,JS,Javascript,CSS,React,VUE,Webpack,CI,nginx">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>JavaScript 中的正则表达式 · Cooper&#39;s Blog</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        height: 60vh;
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Cooper&#39;s Blog</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">JavaScript 中的正则表达式</a>
+            </div>
+    </div>
+    
+    
+      <a class="home-link" href=/><img width="32px" height="32px" src="/assets/Home.svg"/></a>
+    
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            JavaScript 中的正则表达式
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "JS">JS</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "JavaScript">JavaScript</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "正则">正则</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">3.8k</span>阅读时长: <span class="post-count reading-time">14 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2020/07/10</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <blockquote>
+<p>在JavaScript中，正则表达式是一个对象。相关的一些方法是  <code>RegExp</code> 的 <code>exec</code> 和 <code>test</code> ，以及<code>String</code>的<code>match</code>、<code>matchAll</code>、<code>replace</code>、<code>search</code>和<code>split</code>。</p>
+</blockquote>
+<h1 id="字符分类"><a href="#字符分类" class="headerlink" title="字符分类"></a>字符分类</h1><p>字符分为转义字符和非转义字符。</p>
+<h2 id="转义字符"><a href="#转义字符" class="headerlink" title="转义字符"></a>转义字符</h2><p>左斜杠 \ ,再任意字符前面加上它，即是一个转义字符，包括它自己。</p>
+<p>eg： \n 表示 换行符， \r 表示回车符</p>
+<h2 id="非转义字符"><a href="#非转义字符" class="headerlink" title="非转义字符"></a>非转义字符</h2><p>转义字符之外的字符</p>
+<h3 id="普通字符"><a href="#普通字符" class="headerlink" title="普通字符"></a>普通字符</h3><p>平时所用的英文字母，数字标点等，没有特殊含义</p>
+<h3 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h3><p>有些字符有自己的特殊含义，如 ^ $ 等位置限定符，还有 * + 等数量限定符</p>
+<h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><h2 id="字面量字符"><a href="#字面量字符" class="headerlink" title="字面量字符"></a>字面量字符</h2><p>即匹配的是一个固定字符，这时候其实也可以用  <code>includes</code> 或者  <code>indexOf</code> 方法解决。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> reg = <span class="regexp">/cooperhu/</span>;</span><br><span class="line"><span class="keyword">let</span> str = <span class="string">'cooperhu great'</span>;</span><br><span class="line">reg.test(str); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="字符组"><a href="#字符组" class="headerlink" title="字符组"></a>字符组</h2><p>如果需求不是匹配一个固定字符串，而是匹配组合的情况，在方括号里的内容是或的关系。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> reg = <span class="regexp">/[abc]/</span>;</span><br><span class="line">reg.test(<span class="string">'a'</span>); <span class="comment">// true</span></span><br><span class="line">reg.test(<span class="string">'b'</span>); <span class="comment">//true</span></span><br><span class="line">reg.test(<span class="string">'c'</span>); <span class="comment">// true</span></span><br><span class="line">reg.test(<span class="string">'abc'</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>但是要是匹配任一英文字母总不能[abcdefghijklmnopqrstuvwxyz]吧，这样也太长了，也不美观。</p>
+<p>这时候可以使用范围表示法 <code>-</code> </p>
+<ul>
+<li>[a-z]表示 a-z任一个小写字母</li>
+<li>[A-Z]表示任一大写字母</li>
+<li>[0-9]表示0到9中的任一数字</li>
+</ul>
+<p>如果要表示一个字符是否是 数字，字母或者下划线就可以写为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> reg = <span class="regexp">/[a-zA-Z0-9_]/</span>;</span><br></pre></td></tr></table></figure>
+
+<p>但是这样写有时候也很麻烦，正则提供了更简单的写法，可以直接写为 <code>\w</code>。</p>
+<p><strong>排除字符组： /[^abc]/ 指目标字符串不能包含a或b或c，这个^不用在字符组里是开始定位符，需要特殊记一下。</strong></p>
+<h2 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h2><p>量词是对字符出现次数进行限定，例如长度和重复次数等。</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>功能</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td>0次或者多次</td>
+<td></td>
+</tr>
+<tr>
+<td>+</td>
+<td>1次或者多次</td>
+<td></td>
+</tr>
+<tr>
+<td>？</td>
+<td>0次或者1次</td>
+<td></td>
+</tr>
+<tr>
+<td>{n}</td>
+<td>指定n次</td>
+<td></td>
+</tr>
+<tr>
+<td>{n,}</td>
+<td>至少n次</td>
+<td></td>
+</tr>
+<tr>
+<td>{n, m}</td>
+<td>至少n次，最多m次</td>
+<td></td>
+</tr>
+<tr>
+<td>{, m}</td>
+<td>最多m次</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="贪婪量词和惰性量词"><a href="#贪婪量词和惰性量词" class="headerlink" title="贪婪量词和惰性量词"></a>贪婪量词和惰性量词</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> reg = <span class="regexp">/\d&#123;1,3&#125;/</span>;</span><br><span class="line"><span class="keyword">let</span> regLazy = <span class="regexp">/\d&#123;1,3&#125;?/</span></span><br><span class="line"><span class="string">'12 123 1234'</span>.match(reg); <span class="comment">// ["12", index: 0, input: "12 123 1234", groups: undefined]</span></span><br><span class="line"><span class="string">'12 123 1234'</span>.match(regLazy); <span class="comment">// ["1", index: 0, input: "12 123 1234", groups: undefined]</span></span><br></pre></td></tr></table></figure>
+
+<p>正常的量词匹配时贪婪的，能多匹配尽量多匹配，相反地如果想实现惰性匹配需要在后面增加一个<code>?</code></p>
+<h2 id="位置匹配"><a href="#位置匹配" class="headerlink" title="位置匹配"></a>位置匹配</h2><p>常见的几种位置限定符号</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>^</td>
+<td>以什么开头</td>
+</tr>
+<tr>
+<td>$</td>
+<td>以什么结尾</td>
+</tr>
+<tr>
+<td>\b</td>
+<td>匹配一个单词边界，即字与空格的位置</td>
+</tr>
+<tr>
+<td>\B</td>
+<td>非单词边界匹配</td>
+</tr>
+<tr>
+<td>(?=p)</td>
+<td>字符p前面的位置，或者当前位置后面必须是字符p</td>
+</tr>
+<tr>
+<td>(?!p)</td>
+<td>与(?=p)相反</td>
+</tr>
+</tbody></table>
+<h2 id="分组"><a href="#分组" class="headerlink" title="分组"></a>分组</h2><p>分组通过括号来实现，一个括号内的表达式就是一个子表达式，我们可以自字符串中直接引用分组。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//yyyy-mm-dd要变成 yyyy/mm/dd的格式</span></span><br><span class="line">date.replace(<span class="regexp">/(\d&#123;4&#125;)-(\d&#123;2&#125;)-(\d&#123;2&#125;)/g</span>, <span class="string">'$1/$2/$3'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>生成的分组除了在字符串中引用，我们还可以在正则表达式中引用，且只能引用前面的分组。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> string1 = <span class="string">"2017-06-12"</span>;</span><br><span class="line"><span class="keyword">var</span> string2 = <span class="string">"2017/06/12"</span>;</span><br><span class="line"><span class="keyword">var</span> string3 = <span class="string">"2017.06.12"</span>;</span><br><span class="line"><span class="keyword">var</span> string4 = <span class="string">"2016-06/12"</span>;</span><br><span class="line"><span class="keyword">let</span> reg = <span class="regexp">/\d&#123;4&#125;-|\/|\.\d&#123;2&#125;-|\/|\.\d&#123;2&#125;/</span></span><br><span class="line"><span class="built_in">console</span>.log(reg.test(string1));<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(reg.test(string2));<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(reg.test(string3));<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(reg.test(string4));<span class="comment">//true</span></span><br><span class="line"><span class="comment">// 以上方法只是在每个位置都把- 或者/或者. 这三种情况用分支选择列出来，这样可以满足我们目前的需求，但是如果要求前后连接符必须一致呢？</span></span><br><span class="line"><span class="keyword">let</span> reg = <span class="regexp">/\d&#123;4&#125;(-|\/|\.)\d&#123;2&#125;\1\d&#123;2&#125;/</span></span><br><span class="line"><span class="built_in">console</span>.log(reg.test(string1));<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(reg.test(string2));<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(reg.test(string3));<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(reg.test(string4));<span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="正则表达式特殊字符表格（MDN）"><a href="#正则表达式特殊字符表格（MDN）" class="headerlink" title="正则表达式特殊字符表格（MDN）"></a>正则表达式特殊字符表格（MDN）</h1><table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-backslash" target="_blank" rel="noopener"><code>\</code></a></td>
+<td align="left">依照下列规则匹配：在非特殊字符之前的反斜杠表示下一个字符是特殊字符，不能按照字面理解。例如，前面没有 “&quot; 的 “b” 通常匹配小写字母 “b”，即字符会被作为字面理解，无论它出现在哪里。但如果前面加了 “&quot;，它将不再匹配任何字符，而是表示一个<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#note" target="_blank" rel="noopener">字符边界</a>。在特殊字符之前的反斜杠表示下一个字符不是特殊字符，应该按照字面理解。详情请参阅下文中的 “转义（Escaping）” 部分。如果你想将字符串传递给 RegExp 构造函数，不要忘记在字符串字面量中反斜杠是转义字符。所以为了在模式中添加一个反斜杠，你需要在字符串字面量中转义它。<code>/[a-z]\s/i</code> 和 <code>new RegExp(&quot;[a-z]\\s&quot;, &quot;i&quot;)</code> 创建了相同的正则表达式：一个用于搜索后面紧跟着空白字符（<code>\s</code> 可看后文）并且在 a-z 范围内的任意字符的表达式。为了通过字符串字面量给 RegExp 构造函数创建包含反斜杠的表达式，你需要在字符串级别和正则表达式级别都对它进行转义。例如 <code>/[a-z]:\\/i</code> 和 <code>new RegExp(&quot;[a-z]:\\\\&quot;,&quot;i&quot;)</code> 会创建相同的表达式，即匹配类似 “C:&quot; 字符串。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-caret" target="_blank" rel="noopener"><code>^</code></a></td>
+<td align="left">匹配输入的开始。如果多行标志被设置为 true，那么也匹配换行符后紧跟的位置。例如，<code>/^A/</code> 并不会匹配 “an A” 中的 ‘A’，但是会匹配 “An E” 中的 ‘A’。当 ‘<code>^</code>‘ 作为第一个字符出现在一个字符集合模式时，它将会有不同的含义。<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-negated-character-set" target="_blank" rel="noopener">反向字符集合</a> 一节有详细介绍和示例。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-dollar" target="_blank" rel="noopener"><code>$</code></a></td>
+<td align="left">匹配输入的结束。如果多行标志被设置为 true，那么也匹配换行符前的位置。例如，<code>/t$/</code> 并不会匹配 “eater” 中的 ‘t’，但是会匹配 “eat” 中的 ‘t’。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-asterisk" target="_blank" rel="noopener"><code>*</code></a></td>
+<td align="left">匹配前一个表达式 0 次或多次。等价于 <code>{0,}</code>。例如，<code>/bo*/</code> 会匹配 “A ghost boooooed” 中的 ‘booooo’ 和 “A bird warbled” 中的 ‘b’，但是在 “A goat grunted” 中不会匹配任何内容。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-plus" target="_blank" rel="noopener"><code>+</code></a></td>
+<td align="left">匹配前面一个表达式 1 次或者多次。等价于 <code>{1,}</code>。例如，<code>/a+/</code> 会匹配 “candy” 中的 ‘a’ 和 “caaaaaaandy” 中所有的 ‘a’，但是在 “cndy” 中不会匹配任何内容。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-questionmark" target="_blank" rel="noopener"><code>?</code></a></td>
+<td align="left">匹配前面一个表达式 0 次或者 1 次。等价于 <code>{0,1}</code>。例如，<code>/e?le?/</code> 匹配 “angel” 中的 ‘el’、”angle” 中的 ‘le’ 以及 “oslo’ 中的 ‘l’。如果<strong>紧跟在任何量词 *、 +、? 或 {} 的后面</strong>，将会使量词变为<strong>非贪婪</strong>（匹配尽量少的字符），和缺省使用的<strong>贪婪模式</strong>（匹配尽可能多的字符）正好相反。例如，对 “123abc” 使用 <code>/\d+/</code> 将会匹配 “123”，而使用 <code>/\d+?/</code> 则只会匹配到 “1”。还用于先行断言中，如本表的 <code>x(?=y)</code> 和 <code>x(?!y)</code> 条目所述。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-dot" target="_blank" rel="noopener"><code>.</code></a></td>
+<td align="left">（小数点）默认匹配除换行符之外的任何单个字符。例如，<code>/.n/</code> 将会匹配 “nay, an apple is on the tree” 中的 ‘an’ 和 ‘on’，但是不会匹配 ‘nay’。如果 <code>s</code> (“dotAll”) 标志位被设为 true，它也会匹配换行符。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-capturing-parentheses" target="_blank" rel="noopener"><code>(x)</code></a></td>
+<td align="left">像下面的例子展示的那样，它会匹配 ‘x’ 并且记住匹配项。其中括号被称为<em>捕获括号</em>。模式 <code>/(foo) (bar) \1 \2/</code> 中的 ‘<code>(foo)</code>‘ 和 ‘<code>(bar)</code>‘ 匹配并记住字符串 “foo bar foo bar” 中前两个单词。模式中的 <code>\1</code> 和 <code>\2</code> 表示第一个和第二个被捕获括号匹配的子字符串，即 <code>foo</code> 和 <code>bar</code>，匹配了原字符串中的后两个单词。注意 <code>\1</code>、<code>\2</code>、…、<code>\n</code> 是用在正则表达式的匹配环节，详情可以参阅后文的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions$edit#special-backreference" target="_blank" rel="noopener">\n</a> 条目。而在正则表达式的替换环节，则要使用像 <code>$1</code>、<code>$2</code>、…、<code>$n</code> 这样的语法，例如，<code>&#39;bar foo&#39;.replace(/(...) (...)/, &#39;$2 $1&#39;)</code>。<code>$&amp;</code> 表示整个用于匹配的原字符串。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-non-capturing-parentheses" target="_blank" rel="noopener"><code>(?:x)</code></a></td>
+<td align="left">匹配 ‘x’ 但是不记住匹配项。这种括号叫作<em>非捕获括号</em>，使得你能够定义与正则表达式运算符一起使用的子表达式。看看这个例子 <code>/(?:foo){1,2}/</code>。如果表达式是 <code>/foo{1,2}/</code>，<code>{1,2}</code> 将只应用于 ‘foo’ 的最后一个字符 ‘o’。如果使用非捕获括号，则 <code>{1,2}</code> 会应用于整个 ‘foo’ 单词。更多信息，可以参阅下文的 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Using_parentheses" target="_blank" rel="noopener">Using parentheses</a> 条目.</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-lookahead" target="_blank" rel="noopener"><code>x(?=y)</code></a></td>
+<td align="left">匹配’x’仅仅当’x’后面跟着’y’.这种叫做先行断言。例如，/Jack(?=Sprat)/会匹配到’Jack’仅当它后面跟着’Sprat’。/Jack(?=Sprat|Frost)/匹配‘Jack’仅当它后面跟着’Sprat’或者是‘Frost’。但是‘Sprat’和‘Frost’都不是匹配结果的一部分。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-lookahead" target="_blank" rel="noopener"><code>(?&lt;=y)</code></a>x</td>
+<td align="left">匹配’x’仅当’x’前面是’y’.这种叫做后行断言。例如，/(?&lt;=Jack)Sprat/会匹配到’ Sprat ‘仅仅当它前面是’ Jack ‘。/(?&lt;=Jack|Tom)Sprat/匹配‘ Sprat ’仅仅当它前面是’Jack’或者是‘Tom’。但是‘Jack’和‘Tom’都不是匹配结果的一部分。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-negated-look-ahead" target="_blank" rel="noopener"><code>x(?!y)</code></a></td>
+<td align="left">仅仅当’x’后面不跟着’y’时匹配’x’，这被称为正向否定查找。例如，仅仅当这个数字后面没有跟小数点的时候，/\d+(?!.)/ 匹配一个数字。正则表达式/\d+(?!.)/.exec(“3.141”)匹配‘141’而不是‘3.141’</td>
+</tr>
+<tr>
+<td align="left"><code>(?&lt;!*y*)*x*</code></td>
+<td align="left">仅仅当’x’前面不是’y’时匹配’x’，这被称为反向否定查找。例如, 仅仅当这个数字前面没有负号的时候，<code>/(?&lt;!-)\d+/</code> 匹配一个数字。 <code>/(?&lt;!-)\d+/.exec(&#39;3&#39;)</code> 匹配到 “3”. <code>/(?&lt;!-)\d+/.exec(&#39;-3&#39;)</code> 因为这个数字前有负号，所以没有匹配到。</td>
+</tr>
+<tr>
+<td align="left">[`x</td>
+<td align="left">y`](<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-or" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-or</a>)</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-quantifier" target="_blank" rel="noopener"><code>{n}</code></a></td>
+<td align="left">n 是一个正整数，匹配了前面一个字符刚好出现了 n 次。 比如， /a{2}/ 不会匹配“candy”中的’a’,但是会匹配“caandy”中所有的 a，以及“caaandy”中的前两个’a’。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-quantifier" target="_blank" rel="noopener"><code>{n,}</code></a></td>
+<td align="left">n是一个正整数，匹配前一个字符至少出现了n次。例如, /a{2,}/ 匹配 “aa”, “aaaa” 和 “aaaaa” 但是不匹配 “a”。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-quantifier-range" target="_blank" rel="noopener"><code>{n,m}</code></a></td>
+<td align="left">n 和 m 都是整数。匹配前面的字符至少n次，最多m次。如果 n 或者 m 的值是0， 这个值被忽略。例如，/a{1, 3}/ 并不匹配“cndy”中的任意字符，匹配“candy”中的a，匹配“caandy”中的前两个a，也匹配“caaaaaaandy”中的前三个a。注意，当匹配”caaaaaaandy“时，匹配的值是“aaa”，即使原始的字符串中有更多的a。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-character-set" target="_blank" rel="noopener"><code>[xyz\]</code></a></td>
+<td align="left">一个字符集合。匹配方括号中的任意字符，包括<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Grammar_and_types" target="_blank" rel="noopener">转义序列</a>。你可以使用破折号（-）来指定一个字符范围。对于点（.）和星号（*）这样的特殊符号在一个字符集中没有特殊的意义。他们不必进行转义，不过转义也是起作用的。 例如，[abcd] 和[a-d]是一样的。他们都匹配”brisket”中的‘b’,也都匹配“city”中的‘c’。/[a-z.]+/ 和/[\w.]+/与字符串“test.i.ng”匹配。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-negated-character-set" target="_blank" rel="noopener"><code>[^xyz\]</code></a></td>
+<td align="left">一个反向字符集。也就是说， 它匹配任何没有包含在方括号中的字符。你可以使用破折号（-）来指定一个字符范围。任何普通字符在这里都是起作用的。例如，[^abc] 和 [^a-c] 是一样的。他们匹配”brisket”中的‘r’，也匹配“chop”中的‘h’。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-backspace" target="_blank" rel="noopener"><code>[\b\]</code></a></td>
+<td align="left">匹配一个退格(U+0008)。（不要和\b混淆了。）</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-word-boundary" target="_blank" rel="noopener"><code>\b</code></a></td>
+<td align="left">匹配一个词的边界。一个词的边界就是一个词不被另外一个“字”字符跟随的位置或者前面跟其他“字”字符的位置，例如在字母和空格之间。注意，匹配中不包括匹配的字边界。换句话说，一个匹配的词的边界的内容的长度是0。（不要和[\b]混淆了）使用”moon”举例： /\bm/匹配“moon”中的‘m’； /oo\b/并不匹配”moon”中的’oo’，因为’oo’被一个“字”字符’n’紧跟着。 /oon\b/匹配”moon”中的’oon’，因为’oon’是这个字符串的结束部分。这样他没有被一个“字”字符紧跟着。 /\w\b\w/将不能匹配任何字符串，因为在一个单词中间的字符永远也不可能同时满足没有“字”字符跟随和有“字”字符跟随两种情况。<strong>注意:</strong> JavaScript的正则表达式引擎将<a href="http://www.ecma-international.org/ecma-262/5.1/#sec-15.10.2.6" target="_blank" rel="noopener">特定的字符集</a>定义为“字”字符。不在该集合中的任何字符都被认为是一个断词。这组字符相当有限：它只包括大写和小写的罗马字母，十进制数字和下划线字符。不幸的是，重要的字符，例如“é”或“ü”，被视为断词。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-non-word-boundary" target="_blank" rel="noopener"><code>\B</code></a></td>
+<td align="left">匹配一个非单词边界。匹配如下几种情况：字符串第一个字符为非“字”字符字符串最后一个字符为非“字”字符两个单词字符之间两个非单词字符之间空字符串例如，/\B../匹配”noonday”中的’oo’, 而/y\B../匹配”possibly yesterday”中的’yes‘</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-control" target="_blank" rel="noopener"><code>\c*X*</code></a></td>
+<td align="left">当X是处于A到Z之间的字符的时候，匹配字符串中的一个控制符。例如，<code>/\cM/</code> 匹配字符串中的 control-M (U+000D)。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-digit" target="_blank" rel="noopener"><code>\d</code></a></td>
+<td align="left">匹配一个数字<code>。``等价于[0-9]</code>。例如， <code>/\d/</code> 或者 <code>/[0-9]/</code> 匹配”B2 is the suite number.”中的’2’。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-non-digit" target="_blank" rel="noopener"><code>\D</code></a></td>
+<td align="left">匹配一个非数字字符<code>。``等价于[^0-9]</code>。例如， <code>/\D/</code> 或者 <code>/[^0-9]/</code> 匹配”B2 is the suite number.”中的’B’ 。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-form-feed" target="_blank" rel="noopener"><code>\f</code></a></td>
+<td align="left">匹配一个换页符 (U+000C)。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-line-feed" target="_blank" rel="noopener"><code>\n</code></a></td>
+<td align="left">匹配一个换行符 (U+000A)。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-carriage-return" target="_blank" rel="noopener"><code>\r</code></a></td>
+<td align="left">匹配一个回车符 (U+000D)。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-white-space" target="_blank" rel="noopener"><code>\s</code></a></td>
+<td align="left">匹配一个空白字符，包括空格、制表符、换页符和换行符。等价于[ \f\n\r\t\v\u00a0\u1680\u180e\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]。例如, <code>/\s\w*/</code> 匹配”foo bar.”中的’ bar’。经测试，\s不匹配”<a href="https://unicode-table.com/cn/180E/" target="_blank" rel="noopener">\u180e</a>“，在当前版本Chrome(v80.0.3987.122)和Firefox(76.0.1)控制台输入/\s/.test(“\u180e”)均返回false。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-non-white-space" target="_blank" rel="noopener"><code>\S</code></a></td>
+<td align="left">匹配一个非空白字符。等价于 <code>[^</code>\f\n\r\t\v\u00a0\u1680\u180e\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff<code>]</code>。例如，<code>/\S\w*/</code> 匹配”foo bar.”中的’foo’。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-tab" target="_blank" rel="noopener"><code>\t</code></a></td>
+<td align="left">匹配一个水平制表符 (U+0009)。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-vertical-tab" target="_blank" rel="noopener"><code>\v</code></a></td>
+<td align="left">匹配一个垂直制表符 (U+000B)。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-word" target="_blank" rel="noopener"><code>\w</code></a></td>
+<td align="left">匹配一个单字字符（字母、数字或者下划线）。等价于 <code>[A-Za-z0-9_]</code>。例如, <code>/\w/</code> 匹配 “apple,” 中的 ‘a’，”$5.28,”中的 ‘5’ 和 “3D.” 中的 ‘3’。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-non-word" target="_blank" rel="noopener"><code>\W</code></a></td>
+<td align="left">匹配一个非单字字符。等价于 <code>[^A-Za-z0-9_]</code>。例如, <code>/\W/</code> 或者 <code>/[^A-Za-z0-9_]/</code> 匹配 “50%.” 中的 ‘%’。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-backreference" target="_blank" rel="noopener"><code>\*n*</code></a></td>
+<td align="left">在正则表达式中，它返回最后的第n个子捕获匹配的子字符串(捕获的数目以左括号计数)。比如 <code>/apple(,)\sorange\1/</code> 匹配”apple, orange, cherry, peach.”中的’apple, orange,’ 。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-null" target="_blank" rel="noopener"><code>\0</code></a></td>
+<td align="left">匹配 NULL（U+0000）字符， 不要在这后面跟其它小数，因为 <code>\0&lt;digits&gt;</code> 是一个八进制转义序列。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-hex-escape" target="_blank" rel="noopener"><code>\xhh</code></a></td>
+<td align="left">匹配一个两位十六进制数（\x00-\xFF）表示的字符。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#special-unicode-escape" target="_blank" rel="noopener"><code>\uhhhh</code></a></td>
+<td align="left">匹配一个四位十六进制数表示的 UTF-16 代码单元。</td>
+</tr>
+<tr>
+<td align="left"><code>\u{hhhh}或\u{hhhhh}</code></td>
+<td align="left">（仅当设置了u标志时）匹配一个十六进制数表示的 Unicode 字符。</td>
+</tr>
+</tbody></table>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="http://cooperhu.com">cooperhu</a>
+            <p>原文链接：<a href="http://cooperhu.com/2020/07/10/js-regexp/">http://cooperhu.com/2020/07/10/js-regexp/</a>
+            <p>发表日期：<a href="http://cooperhu.com/2020/07/10/js-regexp/">July 10th 2020, 11:03:46 pm</a>
+            <p>更新日期：<a href="http://cooperhu.com/2020/07/10/js-regexp/">February 21st 2022, 4:52:17 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2020/07/12/jp-learn2/" title= "日语基础学习2-数字">
+                    <div class="nextTitle">日语基础学习2-数字</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2020/06/29/jp-learn1/" title= "日语基础学习1">
+                    <div class="prevTitle">日语基础学习1</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:huguobo2010@icloud.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/huguobo" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="https://huguobo.github.io/old-blog/" class="iconfont-archer others" target="_blank" title=others></a>
+            
+        
+    
+        
+    
+
+    </div>
+    
+     <!-- footer custom text -->
+     <p class="footer-text">
+     
+          
+              <a href="https://beian.miit.gov.cn" target="_blank" rel="nofollow noopener noreferrer">京ICP备19041562号</a>
+          
+      
+      </p>
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-powerhexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#字符分类"><span class="toc-number">1.</span> <span class="toc-text">字符分类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#转义字符"><span class="toc-number">1.1.</span> <span class="toc-text">转义字符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#非转义字符"><span class="toc-number">1.2.</span> <span class="toc-text">非转义字符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#普通字符"><span class="toc-number">1.2.1.</span> <span class="toc-text">普通字符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#元字符"><span class="toc-number">1.2.2.</span> <span class="toc-text">元字符</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#正则表达式"><span class="toc-number">2.</span> <span class="toc-text">正则表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#字面量字符"><span class="toc-number">2.1.</span> <span class="toc-text">字面量字符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符组"><span class="toc-number">2.2.</span> <span class="toc-text">字符组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#量词"><span class="toc-number">2.3.</span> <span class="toc-text">量词</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#贪婪量词和惰性量词"><span class="toc-number">2.3.1.</span> <span class="toc-text">贪婪量词和惰性量词</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#位置匹配"><span class="toc-number">2.4.</span> <span class="toc-text">位置匹配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分组"><span class="toc-number">2.5.</span> <span class="toc-text">分组</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#正则表达式特殊字符表格（MDN）"><span class="toc-number">3.</span> <span class="toc-text">正则表达式特殊字符表格（MDN）</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 19
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span><a class="archive-post-title" href= "/2020/09/03/useEffect-componentDidMount/" >useEffect(fn, []) 不等于 componentDidMount()</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/04</span><a class="archive-post-title" href= "/2020/08/04/jp-learn3/" >日语基础学习3-状态表示</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/12</span><a class="archive-post-title" href= "/2020/07/12/jp-learn2/" >日语基础学习2-数字</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/10</span><a class="archive-post-title" href= "/2020/07/10/js-regexp/" >JavaScript 中的正则表达式</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/29</span><a class="archive-post-title" href= "/2020/06/29/jp-learn1/" >日语基础学习1</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/01</span><a class="archive-post-title" href= "/2020/05/01/javascript-type-judgement/" >不懂就问系列-JavaScript到底怎么判断数据类型</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/25</span><a class="archive-post-title" href= "/2019/11/25/http-cache/" >不懂就问系列-浏览器里到底有多少种缓存机制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/21</span><a class="archive-post-title" href= "/2019/10/21/why-git-add/" >不懂就问系列-为什么git有暂存区这一层</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/15</span><a class="archive-post-title" href= "/2019/10/15/canvas/" >不懂就问系列-Canvas和WebGL是啥关系？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/10</span><a class="archive-post-title" href= "/2019/10/10/thread/" >操作系统中的进程和线程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/24</span><a class="archive-post-title" href= "/2019/09/24/js-image-preview/" >H5实现图片预览的两种方式和区别</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/HHKB/" >HHKB键盘</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/09</span><a class="archive-post-title" href= "/2019/09/09/JsWidthAndHeight/" >WEB开发中涉及的各种宽高</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/07</span><a class="archive-post-title" href= "/2019/09/07/ElonAndJack/" >关于双马谈话的感悟</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span><a class="archive-post-title" href= "/2019/09/03/sshLogin/" >SSH、SSL 和 HTTPS</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/01</span><a class="archive-post-title" href= "/2019/09/01/Travis-CI持续集成Hexo到云服务器/" >Travis-CI 持续集成 hexo 到云服务器</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/31</span><a class="archive-post-title" href= "/2019/08/31/node-1/" >Node模块机制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/31</span><a class="archive-post-title" href= "/2019/08/31/nginx配置ssl/" >Nginx 配置 SSL</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/30</span><a class="archive-post-title" href= "/2019/08/30/新网站/" >关于这个网站</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="日常"><span class="iconfont-archer">&#xe606;</span>日常</span>
+    
+        <span class="sidebar-tag-name" data-tags="思考"><span class="iconfont-archer">&#xe606;</span>思考</span>
+    
+        <span class="sidebar-tag-name" data-tags="HHKB"><span class="iconfont-archer">&#xe606;</span>HHKB</span>
+    
+        <span class="sidebar-tag-name" data-tags="keyboard"><span class="iconfont-archer">&#xe606;</span>keyboard</span>
+    
+        <span class="sidebar-tag-name" data-tags="scorllTop"><span class="iconfont-archer">&#xe606;</span>scorllTop</span>
+    
+        <span class="sidebar-tag-name" data-tags="height"><span class="iconfont-archer">&#xe606;</span>height</span>
+    
+        <span class="sidebar-tag-name" data-tags="width"><span class="iconfont-archer">&#xe606;</span>width</span>
+    
+        <span class="sidebar-tag-name" data-tags="travis"><span class="iconfont-archer">&#xe606;</span>travis</span>
+    
+        <span class="sidebar-tag-name" data-tags="CI"><span class="iconfont-archer">&#xe606;</span>CI</span>
+    
+        <span class="sidebar-tag-name" data-tags="hexo"><span class="iconfont-archer">&#xe606;</span>hexo</span>
+    
+        <span class="sidebar-tag-name" data-tags="gem"><span class="iconfont-archer">&#xe606;</span>gem</span>
+    
+        <span class="sidebar-tag-name" data-tags="cache"><span class="iconfont-archer">&#xe606;</span>cache</span>
+    
+        <span class="sidebar-tag-name" data-tags="expires"><span class="iconfont-archer">&#xe606;</span>expires</span>
+    
+        <span class="sidebar-tag-name" data-tags="cache-control"><span class="iconfont-archer">&#xe606;</span>cache-control</span>
+    
+        <span class="sidebar-tag-name" data-tags="last-modified"><span class="iconfont-archer">&#xe606;</span>last-modified</span>
+    
+        <span class="sidebar-tag-name" data-tags="etag"><span class="iconfont-archer">&#xe606;</span>etag</span>
+    
+        <span class="sidebar-tag-name" data-tags="不懂就问"><span class="iconfont-archer">&#xe606;</span>不懂就问</span>
+    
+        <span class="sidebar-tag-name" data-tags="Canvas"><span class="iconfont-archer">&#xe606;</span>Canvas</span>
+    
+        <span class="sidebar-tag-name" data-tags="WebGL"><span class="iconfont-archer">&#xe606;</span>WebGL</span>
+    
+        <span class="sidebar-tag-name" data-tags="javascript"><span class="iconfont-archer">&#xe606;</span>javascript</span>
+    
+        <span class="sidebar-tag-name" data-tags="日语"><span class="iconfont-archer">&#xe606;</span>日语</span>
+    
+        <span class="sidebar-tag-name" data-tags="浊音"><span class="iconfont-archer">&#xe606;</span>浊音</span>
+    
+        <span class="sidebar-tag-name" data-tags="半浊音"><span class="iconfont-archer">&#xe606;</span>半浊音</span>
+    
+        <span class="sidebar-tag-name" data-tags="状态"><span class="iconfont-archer">&#xe606;</span>状态</span>
+    
+        <span class="sidebar-tag-name" data-tags="数字"><span class="iconfont-archer">&#xe606;</span>数字</span>
+    
+        <span class="sidebar-tag-name" data-tags="NODE"><span class="iconfont-archer">&#xe606;</span>NODE</span>
+    
+        <span class="sidebar-tag-name" data-tags="nginx"><span class="iconfont-archer">&#xe606;</span>nginx</span>
+    
+        <span class="sidebar-tag-name" data-tags="ssl"><span class="iconfont-archer">&#xe606;</span>ssl</span>
+    
+        <span class="sidebar-tag-name" data-tags="Https"><span class="iconfont-archer">&#xe606;</span>Https</span>
+    
+        <span class="sidebar-tag-name" data-tags="JS"><span class="iconfont-archer">&#xe606;</span>JS</span>
+    
+        <span class="sidebar-tag-name" data-tags="File"><span class="iconfont-archer">&#xe606;</span>File</span>
+    
+        <span class="sidebar-tag-name" data-tags="HTML5"><span class="iconfont-archer">&#xe606;</span>HTML5</span>
+    
+        <span class="sidebar-tag-name" data-tags="SSH"><span class="iconfont-archer">&#xe606;</span>SSH</span>
+    
+        <span class="sidebar-tag-name" data-tags="SSL"><span class="iconfont-archer">&#xe606;</span>SSL</span>
+    
+        <span class="sidebar-tag-name" data-tags="encrypt"><span class="iconfont-archer">&#xe606;</span>encrypt</span>
+    
+        <span class="sidebar-tag-name" data-tags="useEffect"><span class="iconfont-archer">&#xe606;</span>useEffect</span>
+    
+        <span class="sidebar-tag-name" data-tags="capturing"><span class="iconfont-archer">&#xe606;</span>capturing</span>
+    
+        <span class="sidebar-tag-name" data-tags="react-hooks"><span class="iconfont-archer">&#xe606;</span>react-hooks</span>
+    
+        <span class="sidebar-tag-name" data-tags="thread"><span class="iconfont-archer">&#xe606;</span>thread</span>
+    
+        <span class="sidebar-tag-name" data-tags="linux"><span class="iconfont-archer">&#xe606;</span>linux</span>
+    
+        <span class="sidebar-tag-name" data-tags="OS"><span class="iconfont-archer">&#xe606;</span>OS</span>
+    
+        <span class="sidebar-tag-name" data-tags="暂存区"><span class="iconfont-archer">&#xe606;</span>暂存区</span>
+    
+        <span class="sidebar-tag-name" data-tags="git add"><span class="iconfont-archer">&#xe606;</span>git add</span>
+    
+        <span class="sidebar-tag-name" data-tags="git commit"><span class="iconfont-archer">&#xe606;</span>git commit</span>
+    
+        <span class="sidebar-tag-name" data-tags="白话"><span class="iconfont-archer">&#xe606;</span>白话</span>
+    
+        <span class="sidebar-tag-name" data-tags="JavaScript"><span class="iconfont-archer">&#xe606;</span>JavaScript</span>
+    
+        <span class="sidebar-tag-name" data-tags="正则"><span class="iconfont-archer">&#xe606;</span>正则</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="daily"><span class="iconfont-archer">&#xe60a;</span>daily</span>
+    
+        <span class="sidebar-category-name" data-categories="JavaScript"><span class="iconfont-archer">&#xe60a;</span>JavaScript</span>
+    
+        <span class="sidebar-category-name" data-categories="devOps"><span class="iconfont-archer">&#xe60a;</span>devOps</span>
+    
+        <span class="sidebar-category-name" data-categories="HTTP"><span class="iconfont-archer">&#xe60a;</span>HTTP</span>
+    
+        <span class="sidebar-category-name" data-categories="WebGL"><span class="iconfont-archer">&#xe60a;</span>WebGL</span>
+    
+        <span class="sidebar-category-name" data-categories="javascript"><span class="iconfont-archer">&#xe60a;</span>javascript</span>
+    
+        <span class="sidebar-category-name" data-categories="日语"><span class="iconfont-archer">&#xe60a;</span>日语</span>
+    
+        <span class="sidebar-category-name" data-categories="NODE"><span class="iconfont-archer">&#xe60a;</span>NODE</span>
+    
+        <span class="sidebar-category-name" data-categories="React"><span class="iconfont-archer">&#xe60a;</span>React</span>
+    
+        <span class="sidebar-category-name" data-categories="OS"><span class="iconfont-archer">&#xe60a;</span>OS</span>
+    
+        <span class="sidebar-category-name" data-categories="Git"><span class="iconfont-archer">&#xe60a;</span>Git</span>
+    
+        <span class="sidebar-category-name" data-categories="React/Hooks"><span class="iconfont-archer">&#xe60a;</span>React/Hooks</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "cooperhu"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
