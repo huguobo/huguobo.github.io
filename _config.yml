@@ -109,5 +109,5 @@ jsonContent:
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
     type: git
-    repo: root@118.24.215.220:/home/git/hexoBlog
-    branch: master
+    repo: git@github.com:huguobo/huguobo.github.io.git
+    branch: gh-pages
